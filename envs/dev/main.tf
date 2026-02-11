@@ -26,3 +26,11 @@ module "security_groups" {
   vpc_id = module.vpc.vpc_id
   name   = "dev"
 }
+
+module "bastion" {
+  source = "../../modules/bastion"
+
+  subnet_id         = module.vpc.public_subnet_ids[0]
+  security_group_id = module.security_groups.public_sg_id
+  name              = "dev-bastion"
+}
