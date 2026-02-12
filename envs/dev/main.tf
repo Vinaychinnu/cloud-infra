@@ -34,3 +34,11 @@ module "bastion" {
   security_group_id = module.security_groups.public_sg_id
   name              = "dev-bastion"
 }
+
+module "app" {
+  source = "../../modules/app"
+
+  subnet_ids        = module.vpc.private_subnet_ids
+  security_group_id = module.security_groups.private_sg_id
+  name              = "dev-app"
+}
