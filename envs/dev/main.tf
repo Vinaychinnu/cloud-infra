@@ -42,3 +42,13 @@ module "app" {
   security_group_id = module.security_groups.private_sg_id
   name              = "dev-app"
 }
+
+module "alb" {
+  source = "../../modules/alb"
+
+  vpc_id             = module.vpc.vpc_id
+  public_subnet_ids  = module.vpc.public_subnet_ids
+  security_group_id  = module.security_groups.public_sg_id
+  app_instance_ids   = module.app.instance_ids
+  name               = "dev-alb"
+}
