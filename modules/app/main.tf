@@ -19,6 +19,15 @@ resource "aws_instance" "app" {
 
   associate_public_ip_address = false
 
+  user_data = <<-EOF
+              #!/bin/bash
+              yum update -y
+              yum install -y nginx
+              systemctl start nginx
+              systemctl enable nginx
+              echo "Hello from ${var.name}-${count.index + 1}" > /usr/share/nginx/html/index.html
+              EOF
+
   tags = {
     Name = "${var.name}-${count.index + 1}"
   }

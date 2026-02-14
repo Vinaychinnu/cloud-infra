@@ -18,3 +18,9 @@ variable "name" {
   description = "Base name for app instances"
   type        = string
 }
+
+variable "app_port" {
+  description = "Port on which the application runs"
+  type        = number
+  default     = 8080
+}

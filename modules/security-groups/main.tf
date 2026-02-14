@@ -38,8 +38,8 @@ resource "aws_security_group" "private" {
 
   ingress {
     description     = "Allow traffic from public security group"
-    from_port       = 8080
-    to_port         = 8080
+    from_port       = 80
+    to_port         = 80
     protocol        = "tcp"
     security_groups = [aws_security_group.public.id]
   }

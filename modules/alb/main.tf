@@ -11,7 +11,7 @@ resource "aws_lb" "this" {
 
 resource "aws_lb_target_group" "this" {
   name     = "${var.name}-tg"
-  port     = 8080
+  port     = 80
   protocol = "HTTP"
   vpc_id   = var.vpc_id
 
@@ -35,5 +35,5 @@ resource "aws_lb_target_group_attachment" "app" {
   count            = length(var.app_instance_ids)
   target_group_arn = aws_lb_target_group.this.arn
   target_id        = var.app_instance_ids[count.index]
-  port             = 8080
+  port             = 80
 }
