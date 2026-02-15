@@ -3,6 +3,7 @@ module "vpc" {
 
   cidr_block = "10.0.0.0/16"
   name       = "dev-vpc"
+  environment = "dev"
 
   availability_zones = [
     "ap-south-1a",
@@ -51,4 +52,8 @@ module "alb" {
   security_group_id  = module.security_groups.public_sg_id
   app_instance_ids   = module.app.instance_ids
   name               = "dev-alb"
+}
+
+output "alb_dns_name" {
+  value = module.alb.alb_dns_name
 }
