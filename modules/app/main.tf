@@ -9,26 +9,50 @@ data "aws_ami" "amazon_linux" {
   }
 }
 
-resource "aws_instance" "app" {
-  count = length(var.subnet_ids)
+resource "aws_launch_template" "this" {
+  name_prefix   = "${var.name}-lt-"
+  image_id      = data.aws_ami.amazon_linux.id
+  instance_type = var.instance_type
 
-  ami                    = data.aws_ami.amazon_linux.id
-  instance_type          = var.instance_type
-  subnet_id              = var.subnet_ids[count.index]
   vpc_security_group_ids = [var.security_group_id]
 
-  associate_public_ip_address = false
+  user_data = base64encode(<<-EOF
+#!/bin/bash
+yum install -y nginx
+systemctl start nginx
+systemctl enable nginx
+EOF
+  )
 
-  user_data = <<-EOF
-              #!/bin/bash
-              yum update -y
-              yum install -y nginx
-              systemctl start nginx
-              systemctl enable nginx
-              echo "Hello from ${var.name}-${count.index + 1}" > /usr/share/nginx/html/index.html
-              EOF
+  tag_specifications {
+    resource_type = "instance"
 
-  tags = {
-    Name = "${var.name}-${count.index + 1}"
+    tags = {
+      Name = var.name
+    }
+  }
+}
+
+resource "aws_autoscaling_group" "this" {
+  desired_capacity = 2
+  max_size         = 3
+  min_size         = 2
+
+  vpc_zone_identifier = var.subnet_ids
+
+  target_group_arns = [var.target_group_arn]
+
+  launch_template {
+    id      = aws_launch_template.this.id
+    version = "$Latest"
+  }
+
+  health_check_type         = "ELB"
+  health_check_grace_period = 60
+
+  tag {
+    key                 = "Name"
+    value               = var.name
+    propagate_at_launch = true
   }
 }

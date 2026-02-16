@@ -24,3 +24,8 @@ variable "app_port" {
   type        = number
   default     = 8080
 }
+
+variable "target_group_arn" {
+  description = "ALB target group ARN"
+  type        = string
+}
