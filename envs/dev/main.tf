@@ -1,39 +1,28 @@
 module "vpc" {
   source = "../../modules/vpc"
 
-  cidr_block = "10.0.0.0/16"
-  name       = "dev-vpc"
-  environment = "dev"
-
-  availability_zones = [
-    "ap-south-1a",
-    "ap-south-1b"
-  ]
-
-  public_subnet_cidrs = [
-    "10.0.1.0/24",
-    "10.0.2.0/24"
-  ]
-
-  private_subnet_cidrs = [
-    "10.0.101.0/24",
-    "10.0.102.0/24"
-  ]
+  cidr_block             = var.vpc_cidr
+  name                   = "${var.environment_name}-vpc"
+  environment            = var.environment_name
+  availability_zones     = var.azs
+  public_subnet_cidrs    = var.public_subnets
+  private_subnet_cidrs   = var.private_subnets
 }
 
 module "security_groups" {
   source = "../../modules/security-groups"
 
   vpc_id = module.vpc.vpc_id
-  name   = "dev"
+  name   = var.environment_name
 }
 
-module "bastion" {
-  source = "../../modules/bastion"
+module "alb" {
+  source = "../../modules/alb"
 
-  subnet_id         = module.vpc.public_subnet_ids[0]
+  vpc_id            = module.vpc.vpc_id
+  public_subnet_ids = module.vpc.public_subnet_ids
   security_group_id = module.security_groups.public_sg_id
-  name              = "dev-bastion"
+  name              = "${var.environment_name}-alb"
 }
 
 module "app" {
@@ -42,16 +31,15 @@ module "app" {
   subnet_ids        = module.vpc.private_subnet_ids
   security_group_id = module.security_groups.private_sg_id
   target_group_arn  = module.alb.target_group_arn
-  name              = "dev-app"
+  name              = "${var.environment_name}-app"
 }
 
-module "alb" {
-  source = "../../modules/alb"
+module "bastion" {
+  source = "../../modules/bastion"
 
-  vpc_id             = module.vpc.vpc_id
-  public_subnet_ids  = module.vpc.public_subnet_ids
-  security_group_id  = module.security_groups.public_sg_id
-  name               = "dev-alb"
+  subnet_id         = module.vpc.public_subnet_ids[0]
+  security_group_id = module.security_groups.public_sg_id
+  name              = "${var.environment_name}-bastion"
 }
 
 output "alb_dns_name" {
