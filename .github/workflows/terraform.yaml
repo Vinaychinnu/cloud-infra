@@ -39,4 +39,8 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -input=false
+        id: plan
+        run: |
+          terraform plan -input=false -no-color -detailed-exitcode
+        continue-on-error: true
+
