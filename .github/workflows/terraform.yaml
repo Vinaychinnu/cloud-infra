@@ -43,12 +43,5 @@ jobs:
           terraform plan \
             -input=false \
             -no-color \
-            -var-file="terraform.tfvars" \
+            -var-file="dev.tfvars" \
             -detailed-exitcode || \
-          if [ $? -eq 2 ]; then
-            echo "Changes detected (expected)."
-            exit 0
-          else
-            echo "Terraform failed."
-            exit 1
-          fi
