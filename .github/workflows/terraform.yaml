@@ -40,8 +40,13 @@ jobs:
 
       - name: Terraform Plan
         run: |
-          terraform plan \
-            -input=false \
-            -no-color \
-            -var-file="dev.tfvars" \
-            -detailed-exitcode || \
+          terraform plan -input=false -no-color -var-file="dev.tfvars" -detailed-exitcode
+          exitcode=$?
+
+          if [ $exitcode -eq 1 ]; then
+            echo "Terraform failed."
+            exit 1
+          else
+            echo "Terraform plan completed."
+            exit 0
+          fi
