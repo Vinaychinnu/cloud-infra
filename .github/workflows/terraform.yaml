@@ -40,7 +40,11 @@ jobs:
 
       - name: Terraform Plan
         run: |
-          terraform plan -input=false -no-color -detailed-exitcode || \
+          terraform plan \
+            -input=false \
+            -no-color \
+            -var-file="terraform.tfvars" \
+            -detailed-exitcode || \
           if [ $? -eq 2 ]; then
             echo "Changes detected (expected)."
             exit 0
