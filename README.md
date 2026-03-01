@@ -26,3 +26,29 @@ Makefile
 
 - `modules/` contains reusable infrastructure components.
 - `envs/` contains environment-specific configuration.
+
+## Running Locally
+
+Initialize an environment:
+
+```
+make init ENV=dev
+```
+
+Review planned changes:
+
+```
+make plan ENV=dev
+```
+
+Apply changes:
+
+```
+make apply ENV=dev
+```
+
+Destroy resources:
+
+```
+make destroy ENV=dev
+```
