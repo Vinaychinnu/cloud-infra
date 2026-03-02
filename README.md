@@ -52,3 +52,12 @@ Destroy resources:
 ```
 make destroy ENV=dev
 ```
+
+## CI
+
+On every push to `main`, GitHub Actions runs:
+
+- `terraform fmt` check
+- `terraform validate`
+- `terraform plan` for dev
+- `terraform plan` for prod
