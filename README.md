@@ -1,4 +1,4 @@
-![Terraform CI](https://github.com/Vinaychinnu/cloud-infra/actions/workflows/terraform.yml/badge.svg)
+[![Terraform CI](https://github.com/Vinaychinnu/cloud-infra/actions/workflows/terraform.yml/badge.svg)](https://github.com/Vinaychinnu/cloud-infra/actions/workflows/terraform.yml)
 
 # terraform-aws-infra
 
