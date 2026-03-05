@@ -1,3 +1,5 @@
+![Terraform CI](https://github.com/Vinaychinnu/cloud-infra/actions/workflows/terraform.yml/badge.svg)
+
 # terraform-aws-infra
 
 Terraform configuration for AWS infrastructure.
