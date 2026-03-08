@@ -4,9 +4,17 @@
 
 Terraform configuration for AWS infrastructure.
 
-Provisions a VPC with public and private subnets, an Application Load Balancer
-fronting an Auto Scaling Group, and a bastion host. Separate configurations
-exist for dev and prod environments.
+## Overview
+
+This repository provisions a basic AWS application infrastructure including:
+
+- VPC with public and private subnets
+- Application Load Balancer
+- Auto Scaling Group for application instances
+- Bastion host for administrative access
+
+Infrastructure is organized using reusable Terraform modules and separate
+environment configurations (`dev` and `prod`).
 
 ## Repository Structure
 
